@@ -13,4 +13,5 @@ def order_dim_cleanizer():
     }
     for priority_name, priority_val in priorities.items():
         df["Order Priority"] = df["Order Priority"].mask(df["Order Priority"] == priority_name, priority_val)
+    df = pd.get_dummies(df, columns=["Ship Mode"])    
     return df
