@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
+from scipy import stats
 
 
 from superstore.consts import DATA_DIR
@@ -64,3 +65,14 @@ def plot_data(data_dir: pathlib.Path = DATA_DIR) -> None:
     axes[2][1].set_ylim(-10000, 20000)
     # show plots
     plt.show()
+    
+    
+def ttest(data_dir: pathlib.Path = DATA_DIR):
+    discounted_df, undiscounted_df = divide_data(data_dir)
+
+    discounted_metrics = discounted_df.loc[:, ["Sales", "Quantity", "Profit"]]
+    undiscounted_metrics = undiscounted_df.loc[:, ["Sales", "Quantity", "Profit"]]
+    
+    tstats, pvalue = stats.ttest_ind(discounted_metrics, undiscounted_metrics)
+    
+    return tstats, pvalue
