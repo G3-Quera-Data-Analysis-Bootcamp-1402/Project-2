@@ -52,7 +52,7 @@ def plot_data(data_dir: pathlib.Path = DATA_DIR) -> None:
                 norm=LogNorm(),
             )
             axes[row][col].set_xlabel("Product Code")
-            axes[row][col].set_ylabel("Sales")
+            axes[row][col].set_ylabel(rows[row])
     # set titles
     axes[0][0].set_title("Discounted")
     axes[0][1].set_title("Undiscounted")
@@ -67,7 +67,7 @@ def plot_data(data_dir: pathlib.Path = DATA_DIR) -> None:
     plt.show()
     
     
-def ttest(data_dir: pathlib.Path = DATA_DIR):
+def ttest(data_dir: pathlib.Path = DATA_DIR) -> tuple[np.ndarray]:
     discounted_df, undiscounted_df = divide_data(data_dir)
 
     discounted_metrics = discounted_df.loc[:, ["Sales", "Quantity", "Profit"]]
