@@ -30,18 +30,15 @@ def divide_data(data_dir: pathlib.Path = DATA_DIR) -> None:
     )
     discounted_product_df["Product Code"] = discounted_product_df.index.tolist()
     undiscounted_product_df["Product Code"] = undiscounted_product_df.index.tolist()
-    discounted_product_df.to_csv(data_dir / "statistics/discounted.csv")
-    undiscounted_product_df.to_csv(data_dir / "statistics/undiscounted.csv")
+    return discounted_product_df, undiscounted_product_df
 
 
 def plot_data(data_dir: pathlib.Path = DATA_DIR) -> None:
-    divide_data(data_dir)
+    d_df, und_df = divide_data(data_dir)
 
     def get_values(df: pd.DataFrame, col: str) -> np.ndarray:
         return df[col].values
 
-    d_df: pd.DataFrame = pd.read_csv(data_dir / "statistics/discounted.csv")
-    und_df: pd.DataFrame = pd.read_csv(data_dir / "statistics/undiscounted.csv")
     fig, axes = plt.subplots(3, 2, figsize=(9, 16), tight_layout=True)
     cols: dict[int, pd.DataFrame] = {0: d_df, 1: und_df}
     rows: dict[int, str] = {0: "Sales", 1: "Quantity", 2: "Profit"}
