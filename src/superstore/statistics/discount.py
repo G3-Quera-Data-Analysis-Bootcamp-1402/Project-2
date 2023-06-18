@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import scipy as sp
-from matplotlib.colors import LogNorm
+from matplotlib.colors import LogNorm, LinearSegmentedColormap
 
 
 from superstore.consts import DATA_DIR
@@ -64,6 +64,9 @@ def plot_data(d_df: pd.DataFrame, und_df: pd.DataFrame) -> None:
         return df[col].values
 
     fig, axes = plt.subplots(3, 2, figsize=(9, 16), tight_layout=True)
+    colors: list[tuple] = [(0.85, 0.7, 1), (0.7, 0.3, 1)] # light purple to dark purple
+    cmap = LinearSegmentedColormap.from_list("LbDb", colors)
+
     cols: dict[int, pd.DataFrame] = {0: d_df, 1: und_df}
     rows: dict[int, str] = {0: "Sales", 1: "Quantity", 2: "Profit"}
     for col in [0, 1]:
@@ -73,6 +76,7 @@ def plot_data(d_df: pd.DataFrame, und_df: pd.DataFrame) -> None:
                 get_values(cols[col], rows[row]),
                 bins=10,
                 norm=LogNorm(),
+                cmap=cmap
             )
             axes[row][col].set_xlabel("Product Code")
             axes[row][col].set_ylabel(rows[row])
@@ -88,6 +92,7 @@ def plot_data(d_df: pd.DataFrame, und_df: pd.DataFrame) -> None:
     axes[2][1].set_ylim(-10000, 20000)
     # show plots
     plt.show()
+
 
 def store_data(dataframes: list[pd.DataFrame], filenames: list[str], has_index: list[bool], data_dir: pathlib.Path = DATA_DIR,) -> None:
     """
